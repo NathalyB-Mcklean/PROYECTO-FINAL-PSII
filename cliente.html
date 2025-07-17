@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Portal del Cliente - Paws Coffee</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">🐾 PAWS COFFEE</div>
+            <ul class="nav-links">
+                <li><a href="cliente.html">Catálogo</a></li>
+                <li><a href="#">Carrito</a></li>
+                <li><a href="#">Reservas</a></li>
+                <li><a href="#">Historial</a></li>
+                <li><a href="login.html" class="admin-btn">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main style="margin-top: 100px;" class="container">
+        <h1>Bienvenido al Portal del Cliente</h1>
+
+        <section>
+            <h2>Catálogo de Productos</h2>
+            <!-- Simulación del catálogo -->
+            <ul>
+                <li>Café Premium - $3.50</li>
+                <li>Sándwich Gourmet - $6.00</li>
+                <li>Galletas para Mascotas - $2.50</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Carrito de Compras</h2>
+            <p>No hay productos en el carrito.</p>
+        </section>
+
+        <section>
+            <h2>Formulario de Reserva</h2>
+            <form>
+                <label>Fecha:</label><input type="date"><br>
+                <label>Hora:</label><input type="time"><br>
+                <label>Número de personas:</label><input type="number" min="1"><br>
+                <button type="submit">Reservar</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Historial</h2>
+            <p>Aquí aparecerán tus compras y reservas anteriores.</p>
+        </section>
+    </main>
+</body>
+</html>
