@@ -83,7 +83,7 @@
             // Obtener conexión
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/paws_coffee?useSSL=false&serverTimezone=UTC",
+                "jdbc:mysql://localhost:3306/pawscoffee?useSSL=false&serverTimezone=UTC",
                 "root",
                 ""  // Cambia si tu MySQL tiene contraseña
             );
