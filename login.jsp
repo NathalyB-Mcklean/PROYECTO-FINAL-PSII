@@ -13,7 +13,7 @@
     <nav class="container">
         <div class="logo">🐾 PAWS COFFEE</div>
         <ul class="nav-links">
-            <li><a href="index.html">Inicio</a></li>
+            <li><a href="home.jsp">Inicio</a></li>
             <li><a href="servicios.html">Servicios</a></li>
             <li><a href="menu.html">Menú</a></li>
             <li><a href="reservas.html">Reservas</a></li>
@@ -55,7 +55,7 @@
             Connection conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/pawscoffee?useSSL=false&serverTimezone=UTC", 
                 "root", 
-                ""  // Cambiar si tu MySQL tiene contraseña
+                ""  // Cambia si tu MySQL tiene contraseña
             );
 
             String sql = "SELECT Rol FROM Usuario WHERE Correo = ? AND Contrasena_hash = ?";
@@ -69,15 +69,8 @@
                 session.setAttribute("correo", correo);
                 session.setAttribute("rol", rol);
 
-                if ("Cliente".equalsIgnoreCase(rol)) {
-                    response.sendRedirect("cliente.html");
-                } else if ("Empleado".equalsIgnoreCase(rol)) {
-                    response.sendRedirect("empleado.html");
-                } else if ("Supervisor".equalsIgnoreCase(rol)) {
-                    response.sendRedirect("supervisor.html");
-                } else if ("Gerente".equalsIgnoreCase(rol)) {
-                    response.sendRedirect("gerente.html");
-                }
+                // Redirigir a home.jsp para mostrar contenido personalizado por rol
+                response.sendRedirect("home.jsp");
             } else {
                 out.println("<p style='color:red;'>Credenciales inválidas</p>");
             }
