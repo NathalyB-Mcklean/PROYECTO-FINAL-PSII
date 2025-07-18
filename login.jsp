@@ -38,20 +38,24 @@
                 <button type="submit" class="cta-button">Iniciar Sesión</button>
             </form>
 
+            <!-- Enlace para usuarios no registrados -->
+            <div style="margin-top: 1rem; text-align: center;">
+                <p>¿No tienes cuenta? 
+                    <a href="registro.jsp" style="color: #8B4513; font-weight: bold;">Regístrate aquí</a>
+                </p>
+            </div>
+
 <%
     String correo = request.getParameter("correo");
     String contrasena = request.getParameter("contrasena");
 
     if (correo != null && contrasena != null) {
         try {
-            // Cargar el driver de MySQL
             Class.forName("com.mysql.cj.jdbc.Driver");
-
-            // Conexión a MySQL (ajusta usuario y contraseña según tu configuración)
             Connection conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/pawscoffee?useSSL=false&serverTimezone=UTC", 
                 "root", 
-                ""  // ← Pon tu contraseña si tiene
+                ""  // Cambiar si tu MySQL tiene contraseña
             );
 
             String sql = "SELECT Rol FROM Usuario WHERE Correo = ? AND Contrasena_hash = ?";

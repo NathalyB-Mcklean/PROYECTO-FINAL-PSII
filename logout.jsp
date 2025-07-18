@@ -1,6 +1,6 @@
 <%@ page session="true" %>
 <%
-    // Invalida la sesiÃ³n
+    // Invalida la sesión actual
     session.invalidate();
 
     // Redirige al login
