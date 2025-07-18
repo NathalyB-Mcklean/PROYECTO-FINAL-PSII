@@ -42,7 +42,7 @@
         <ul class="nav-links">
             <li><a href="home.jsp">Inicio</a></li>
             <li><a href="servicios.html">Servicios</a></li>
-            <li><a href="menu.jsp">Menú</a></li>
+            <li><a href="menu.jsp">Producto</a></li>
             <li><a href="reservas.html">Reservas</a></li>
             <li><a href="nosotros.html">Nosotros</a></li>
             <li><a href="login.jsp" class="admin-btn">Login</a></li>
