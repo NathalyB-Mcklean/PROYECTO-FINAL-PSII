@@ -82,7 +82,7 @@
             <ul class="nav-links">
                 <li><a href="home.jsp">Inicio</a></li>
                 <li><a href="reporteFinanciero.jsp">Reportes Financieros</a></li>
-                <li><a href="gestion_empleados.jsp">Gestión de Empleados</a></li>
+                <li><a href="gestionarHorario.jsp">Gestión de Empleados</a></li>
                 <li><a href="logout.jsp">Cerrar Sesión</a></li>
             </ul>
         </nav>
