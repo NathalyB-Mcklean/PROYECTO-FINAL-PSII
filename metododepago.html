@@ -2,33 +2,345 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Método de Pago - Paws Coffee</title>
+    <title>Reservas - Paws Coffee</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="contenedor">
-        <h1>Método de Pago</h1>
+    <header>
+        <nav class="container">
+            <div class="logo">🐾 PAWS COFFEE</div>
+            <a href="menu.html" class="back-btn">← Volver al Menú</a>
+        </nav>
+    </header>
 
-        <form>
-            <label for="nombre">Nombre completo:</label>
-            <input type="text" id="nombre" name="nombre" required>
+    <main class="container">
+        <div class="payment-container">
+            <div class="payment-header">
+                <h1>🐾 Finalizar Pedido</h1>
+                <p>Completa tu compra de forma segura</p>
+            </div>
 
-            <label for="tarjeta">Número de tarjeta:</label>
-            <input type="text" id="tarjeta" name="tarjeta" required>
+            <div class="payment-content">
+                <div class="payment-form">
+                    <h2 class="section-title">Información de Contacto</h2>
+                    <form id="payment-form">
+                        <div class="form-group">
+                            <label for="name">Nombre Completo</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
 
-            <label for="fecha">Fecha de expiración:</label>
-            <input type="month" id="fecha" name="fecha" required>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
 
-            <label for="cvv">CVV:</label>
-            <input type="text" id="cvv" name="cvv" required>
+                        <div class="form-group">
+                            <label for="phone">Teléfono</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
 
-            <label for="direccion">Dirección de envío:</label>
-            <textarea id="direccion" name="direccion" required></textarea>
+                        <h2 class="section-title">Método de Pago</h2>
+                        <div class="payment-methods">
+                            <div class="payment-method active" data-method="card">
+                                <div class="icon">💳</div>
+                                <div class="name">Tarjeta de Crédito</div>
+                                <div class="description">Visa, MasterCard, American Express</div>
+                            </div>
 
-            <button type="submit">Realizar Pago</button>
-        </form>
+                            <div class="payment-method" data-method="paypal">
+                                <div class="icon">🔵</div>
+                                <div class="name">PayPal</div>
+                                <div class="description">Pago seguro con PayPal</div>
+                            </div>
 
-        <a href="menu.html" class="volver">← Volver al Menú</a>
-    </div>
+                            <div class="payment-method" data-method="cash">
+                                <div class="icon">💵</div>
+                                <div class="name">Efectivo</div>
+                                <div class="description">Pago en el local</div>
+                            </div>
+
+                            <div class="payment-method" data-method="transfer">
+                                <div class="icon">🏦</div>
+                                <div class="name">Transferencia</div>
+                                <div class="description">Yappy, ACH, Transferencia</div>
+                            </div>
+                        </div>
+
+                        <div class="card-details active" id="card-details">
+                            <div class="card-preview">
+                                <div class="card-number" id="card-display">**** **** **** ****</div>
+                                <div class="card-info">
+                                    <div class="card-name" id="name-display">NOMBRE COMPLETO</div>
+                                    <div class="card-logo">💳</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="card-number">Número de Tarjeta</label>
+                                <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" maxlength="19">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expiry">Fecha de Vencimiento</label>
+                                    <input type="text" id="expiry" name="expiry" placeholder="MM/AA" maxlength="5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cvv">CVV</label>
+                                    <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-details" id="paypal-details">
+                            <div class="form-group">
+                                <p>🔵 Serás redirigido a PayPal para completar tu pago de forma segura.</p>
+                            </div>
+                        </div>
+
+                        <div class="card-details" id="cash-details">
+                            <div class="form-group">
+                                <p>💵 Pagarás en efectivo al recoger tu pedido en el local.</p>
+                                <p><strong>Dirección:</strong> Av. Principal, Local 123, Panamá</p>
+                            </div>
+                        </div>
+
+                        <div class="card-details" id="transfer-details">
+                            <div class="form-group">
+                                <label>Selecciona tu método preferido:</label>
+                                <select id="transfer-method">
+                                    <option value="yappy">Yappy</option>
+                                    <option value="ach">ACH</option>
+                                    <option value="transfer">Transferencia Bancaria</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <p>📱 Te enviaremos los detalles de pago por email para completar la transferencia.</p>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            🐾 Procesar Pago - $<span id="final-total">0.00</span>
+                        </button>
+                    </form>
+
+                    <div class="security-info">
+                        <div class="icon">🔒</div>
+                        <p><strong>Pago 100% Seguro</strong><br>
+                        Tus datos están protegidos con encriptación SSL</p>
+                    </div>
+                </div>
+
+                <div class="order-summary">
+                    <h2 class="section-title">Resumen del Pedido</h2>
+                    <div id="order-items">
+                        <!-- Los items se cargarán aquí -->
+                    </div>
+                    
+                    <div class="order-total">
+                        <div class="total-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">$0.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Impuesto (7%):</span>
+                            <span id="tax">$0.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Delivery:</span>
+                            <span id="delivery">$2.00</span>
+                        </div>
+                        <div class="total-row total-final">
+                            <span>Total:</span>
+                            <span id="total">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <h3>Procesando tu pago...</h3>
+                <p>Por favor espera mientras confirmamos tu transacción</p>
+            </div>
+
+            <div class="success-message" id="success">
+                <div class="icon">✅</div>
+                <h2>¡Pago Exitoso!</h2>
+                <p>Tu pedido ha sido confirmado. Recibirás un email con los detalles.</p>
+                <p><strong>Número de Orden:</strong> #PC<span id="order-number"></span></p>
+                <button class="submit-btn" onclick="window.location.href='menu.html'">
+                    Volver al Menú
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Datos de ejemplo del carrito (normalmente vendrían de localStorage o sessionStorage)
+        const sampleCart = [
+            { name: 'Café Espresso', price: 2.50, emoji: '☕', quantity: 2 },
+            { name: 'Club Sandwich', price: 6.50, emoji: '🥪', quantity: 1 },
+            { name: 'Cupcake Chocolate', price: 3.00, emoji: '🧁', quantity: 1 },
+            { name: 'Huesos Naturales', price: 3.50, emoji: '🦴', quantity: 1 }
+        ];
+
+        // Cargar el resumen del pedido
+        function loadOrderSummary() {
+            const orderItems = document.getElementById('order-items');
+            const subtotalElement = document.getElementById('subtotal');
+            const taxElement = document.getElementById('tax');
+            const deliveryElement = document.getElementById('delivery');
+            const totalElement = document.getElementById('total');
+            const finalTotalElement = document.getElementById('final-total');
+
+            // Renderizar items
+            orderItems.innerHTML = sampleCart.map(item => `
+                <div class="order-item">
+                    <div class="item-info">
+                        <div class="item-emoji">${item.emoji}</div>
+                        <div class="item-details">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-quantity">Cantidad: ${item.quantity}</div>
+                        </div>
+                    </div>
+                    <div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+                </div>
+            `).join('');
+
+            // Calcular totales
+            const subtotal = sampleCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.07;
+            const delivery = 2.00;
+            const total = subtotal + tax + delivery;
+
+            subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+            taxElement.textContent = `$${tax.toFixed(2)}`;
+            deliveryElement.textContent = `$${delivery.toFixed(2)}`;
+            totalElement.textContent = `$${total.toFixed(2)}`;
+            finalTotalElement.textContent = total.toFixed(2);
+        }
+
+        // Manejar selección de método de pago
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', function() {
+                // Remover clase activa de todos
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+                document.querySelectorAll('.card-details').forEach(d => d.classList.remove('active'));
+                
+                // Agregar clase activa al seleccionado
+                this.classList.add('active');
+                
+                // Mostrar detalles correspondientes
+                const methodType = this.dataset.method;
+                const detailsElement = document.getElementById(`${methodType}-details`);
+                if (detailsElement) {
+                    detailsElement.classList.add('active');
+                }
+            });
+        });
+
+        // Formatear número de tarjeta
+        document.getElementById('card-number').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+            
+            // Actualizar preview
+            const display = document.getElementById('card-display');
+            if (value.length > 0) {
+                const masked = value.replace(/\d(?=\d{4})/g, '*');
+                display.textContent = masked.match(/.{1,4}/g)?.join(' ') || masked;
+            } else {
+                display.textContent = '**** **** **** ****';
+            }
+        });
+
+        // Formatear fecha de vencimiento
+        document.getElementById('expiry').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        // Actualizar nombre en preview
+        document.getElementById('name').addEventListener('input', function(e) {
+            const display = document.getElementById('name-display');
+            display.textContent = e.target.value.toUpperCase() || 'NOMBRE COMPLETO';
+        });
+
+        // Manejar envío del formulario
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const paymentMethod = document.querySelector('.payment-method.active').dataset.method;
+            
+            // Validar campos requeridos
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const phone = formData.get('phone');
+            
+            if (!name || !email || !phone) {
+                alert('Por favor completa todos los campos requeridos');
+                return;
+            }
+            
+            // Validar tarjeta si es necesario
+            if (paymentMethod === 'card') {
+                const cardNumber = formData.get('card-number');
+                const expiry = formData.get('expiry');
+                const cvv = formData.get('cvv');
+                
+                if (!cardNumber || !expiry || !cvv) {
+                    alert('Por favor completa todos los datos de la tarjeta');
+                    return;
+                }
+            }
+            
+            // Mostrar loading
+            document.querySelector('.payment-content').style.display = 'none';
+            document.getElementById('loading').classList.add('active');
+            
+            // Simular procesamiento
+            setTimeout(() => {
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('success').classList.add('active');
+                
+                // Generar número de orden
+                const orderNumber = Math.floor(Math.random() * 10000);
+                document.getElementById('order-number').textContent = orderNumber;
+                
+                // Limpiar carrito (normalmente se haría en localStorage)
+                console.log('Pedido procesado:', {
+                    orderNumber,
+                    customer: { name, email, phone },
+                    paymentMethod,
+                    items: sampleCart,
+                    total: document.getElementById('total').textContent
+                });
+                
+            }, 3000);
+        });
+
+        // Inicializar página
+        loadOrderSummary();
+    </script>
+<footer>
+        <div class="container">
+            <p>🐾 Síguenos: @PawsCoffeePanama | <a href="https://www.google.com" target="_blank">🔍 Buscar</a></p>
+            <nav>
+                <a href="index.html">Inicio</a> |
+                <a href="servicios.html">Servicios</a> |
+                <a href="menu.html">Menú</a> |
+                <a href="reservas.html">Reservas</a> |
+                <a href="nosotros.html">Nosotros</a> |
+                <a href="login.html">Logout</a>
+            </nav>
+            <p>&copy; 2025 Paws Coffee. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 </body>
 </html>
