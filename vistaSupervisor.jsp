@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, javax.sql.*" %>
+<%@ page import="java.sql.*" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,31 +20,85 @@
         </ul>
     </nav>
 </header>
-
 <body>
 
-<h1>Bienvenido, Supervisor</h1>
+<h1>Panel de Ventas</h1>
 
 <%
     String url = "jdbc:mysql://localhost:3306/tu_basedatos";
     String user = "root";
-    String pass = "tu_contraseña";
-
+    String password = "tu_contraseña";
     Connection conn = null;
     Statement stmt = null;
     ResultSet rs = null;
 
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection(url, user, pass);
+        conn = DriverManager.getConnection(url, user, password);
         stmt = conn.createStatement();
 %>
 
-<!-- ========== SECCIÓN: VENTAS ========= -->
-<h2>Resumen de Ventas por Día</h2>
+<!-- =================== DETALLE DE VENTAS =================== -->
+<h2>Detalle de Ventas</h2>
 <table>
     <tr>
-        <th>Día</th>
+        <th>ID Venta</th>
+        <th>Fecha</th>
+        <th>Total</th>
+        <th>Tipo de Pago</th>
+        <th>ID Producto</th>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio Unitario</th>
+        <th>Impuesto</th>
+    </tr>
+<%
+        rs = stmt.executeQuery("SELECT * FROM VistaDetalleVentas");
+        while (rs.next()) {
+%>
+    <tr>
+        <td><%= rs.getInt("ID_Venta") %></td>
+        <td><%= rs.getDate("Fecha") %></td>
+        <td>$<%= rs.getDouble("Total") %></td>
+        <td><%= rs.getString("TipoPago") %></td>
+        <td><%= rs.getInt("ID_Producto") %></td>
+        <td><%= rs.getString("Producto") %></td>
+        <td><%= rs.getInt("Cantidad") %></td>
+        <td>$<%= rs.getDouble("Precio_Unitario") %></td>
+        <td>$<%= rs.getDouble("Impuesto") %></td>
+    </tr>
+<%
+        }
+        rs.close();
+%>
+</table>
+
+<!-- =================== VENTAS POR CATEGORÍA =================== -->
+<h2>Ventas por Categoría</h2>
+<table>
+    <tr>
+        <th>Categoría</th>
+        <th>Total Recaudado</th>
+    </tr>
+<%
+        rs = stmt.executeQuery("SELECT * FROM VistaVentasPorCategoria");
+        while (rs.next()) {
+%>
+    <tr>
+        <td><%= rs.getString("Categoria") %></td>
+        <td>$<%= rs.getDouble("TotalRecaudado") %></td>
+    </tr>
+<%
+        }
+        rs.close();
+%>
+</table>
+
+<!-- =================== VENTAS POR DÍA =================== -->
+<h2>Ventas por Día</h2>
+<table>
+    <tr>
+        <th>Fecha</th>
         <th>Cantidad de Ventas</th>
         <th>Total Recaudado</th>
     </tr>
@@ -59,58 +113,8 @@
     </tr>
 <%
         }
-%>
-</table>
-
-<!-- ========== SECCIÓN: INVENTARIO ========= -->
-<h2>Inventario Crítico</h2>
-<table>
-    <tr>
-        <th>ID Producto</th>
-        <th>Nombre</th>
-        <th>Categoría</th>
-        <th>Inventario</th>
-        <th>Estado</th>
-    </tr>
-<%
-        rs = stmt.executeQuery("SELECT * FROM Vista_Inventario_Critico");
-        while (rs.next()) {
-%>
-    <tr>
-        <td><%= rs.getInt("ID_Producto") %></td>
-        <td><%= rs.getString("Nombre") %></td>
-        <td><%= rs.getString("Categoria") %></td>
-        <td><%= rs.getInt("Inventario") %></td>
-        <td><%= rs.getString("Estado_Stock") %></td>
-    </tr>
-<%
-        }
-%>
-</table>
-
-<!-- ========== SECCIÓN: REPORTES ========= -->
-<h2>Top Clientes del Mes</h2>
-<table>
-    <tr>
-        <th>ID Cliente</th>
-        <th>Cliente</th>
-        <th>Compras del Mes</th>
-        <th>Monto Total</th>
-    </tr>
-<%
-        rs = stmt.executeQuery("SELECT * FROM Vista_Top_Clientes_Mes");
-        while (rs.next()) {
-%>
-    <tr>
-        <td><%= rs.getInt("ID_Cliente") %></td>
-        <td><%= rs.getString("Cliente") %></td>
-        <td><%= rs.getInt("Compras_Mes") %></td>
-        <td>$<%= rs.getDouble("Monto_Total") %></td>
-    </tr>
-<%
-        }
     } catch (Exception e) {
-        out.println("Error: " + e.getMessage());
+        out.println("<p style='color:red;'>Error: " + e.getMessage() + "</p>");
     } finally {
         if (rs != null) try { rs.close(); } catch (SQLException ignore) {}
         if (stmt != null) try { stmt.close(); } catch (SQLException ignore) {}
