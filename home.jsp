@@ -37,7 +37,7 @@
             <div class="logo">🐾 PAWS COFFEE</div>
             <ul class="nav-links">
                 <li><a href="home.jsp">Inicio</a></li>
-                <li><a href="menu.html">Menú</a></li>
+                <li><a href="menu.jsp">Producto</a></li>
                 <li><a href="reservas.html">Mis Reservas</a></li>
                 <li><a href="compra.html">Mi pedido</a>
                 <li><a href="logout.jsp">Cerrar Sesión</a></li>

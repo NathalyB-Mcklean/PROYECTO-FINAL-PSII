@@ -1,109 +1,60 @@
-<%@ page import="java.sql.*" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Men√∫ - Paws Coffee</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 2rem;
-        }
-
-        .producto-card {
-            background-color: #f8f8f8;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid #ddd;
-            transition: transform 0.2s, background-color 0.3s;
-        }
-
-        .producto-card:hover {
-            background-color: #eaeaea;
-            transform: scale(1.02);
-        }
-
-        .producto-card h3 {
-            color: #8B4513;
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
+<%@ page import="java.util.*, javax.servlet.http.*" %>
+<%@ page session="true" %>
+<html>
+<head><title>Men˙ de Productos</title></head>
 <body>
+<h2>Cat·logo de Productos</h2>
+<%
+    class Producto {
+        int id;
+        String nombre;
+        double precio;
+        Producto(int id, String nombre, double precio) {
+            this.id = id; this.nombre = nombre; this.precio = precio;
+        }
+    }
 
-<header>
-    <nav class="container">
-        <div class="logo">üêæ PAWS COFFEE</div>
-        <ul class="nav-links">
-            <li><a href="home.jsp">Inicio</a></li>
-            <li><a href="servicios.html">Servicios</a></li>
-            <li><a href="menu.jsp">Producto</a></li>
-            <li><a href="reservas.html">Reservas</a></li>
-            <li><a href="nosotros.html">Nosotros</a></li>
-            <li><a href="login.jsp" class="admin-btn">Login</a></li>
-        </ul>
-    </nav>
-</header>
+    // SimulaciÛn de productos (en producciÛn, leer desde la BD)
+    List<Producto> productos = new ArrayList<>();
+    productos.add(new Producto(1, "Latte de Avena", 3.50));
+    productos.add(new Producto(2, "Croissant", 2.00));
+    productos.add(new Producto(3, "Taza Paws Coffee", 5.00));
 
-<main class="container" style="margin-top: 100px;">
-    <section>
-        <h1>Men√∫ de Productos</h1>
-        <div class="menu-grid">
-        <%
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/pawscoffee?useSSL=false&serverTimezone=UTC", 
-                    "root", 
-                    ""
-                );
+    // Recuperar carrito desde sesiÛn
+    List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
+    if (carrito == null) {
+        carrito = new ArrayList<>();
+        session.setAttribute("carrito", carrito);
+    }
 
-                String sql = "SELECT p.Nombre AS Producto, p.Precio, c.Nombre AS Categoria " +
-                             "FROM Producto p JOIN Categoria c ON p.ID_Categoria = c.ID_Categoria";
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery();
-
-                while (rs.next()) {
-                    String nombre = rs.getString("Producto");
-                    double precio = rs.getDouble("Precio");
-                    String categoria = rs.getString("Categoria");
-        %>
-            <div class="producto-card">
-                <h3><%= nombre %></h3>
-                <p>Categor√≠a: <%= categoria %></p>
-                <p>Precio: $<%= precio %></p>
-            </div>
-        <%
-                }
-
-                conn.close();
-            } catch (Exception e) {
-                out.println("<p style='color:red;'>Error al cargar productos: " + e.getMessage() + "</p>");
+    // Agregar producto al carrito si hay ID recibido
+    String idProd = request.getParameter("id");
+    if (idProd != null) {
+        int idSeleccionado = Integer.parseInt(idProd);
+        for (Producto p : productos) {
+            if (p.id == idSeleccionado) {
+                carrito.add(p);
+                break;
             }
-        %>
-        </div>
-    </section>
-</main>
+        }
+    }
+%>
 
-<footer>
-    <div class="container">
-        <p>üêæ S√≠guenos: @PawsCoffeePanama | <a href="https://www.google.com" target="_blank">üîç Buscar</a></p>
-        <nav>
-            <a href="home.jsp">Inicio</a> |
-            <a href="servicios.html">Servicios</a> |
-            <a href="menu.jsp">Men√∫</a> |
-            <a href="reservas.html">Reservas</a> |
-            <a href="nosotros.html">Nosotros</a> |
-            <a href="logout.jsp">Cerrar Sesi√≥n</a>
-        </nav>
-        <p>&copy; 2025 Paws Coffee. Todos los derechos reservados.</p>
-    </div>
-</footer>
+<table border="1">
+<tr><th>Nombre</th><th>Precio</th><th>AcciÛn</th></tr>
+<%
+    for (Producto p : productos) {
+%>
+<tr>
+    <td><%= p.nombre %></td>
+    <td>$<%= p.precio %></td>
+    <td><a href="menu.jsp?id=<%= p.id %>">Agregar al carrito</a></td>
+</tr>
+<%
+    }
+%>
+</table>
 
+<p><a href="compra.jsp">Ver carrito y pagar</a></p>
 </body>
 </html>
