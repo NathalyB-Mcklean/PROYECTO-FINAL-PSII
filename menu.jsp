@@ -21,6 +21,7 @@
     productos.add(new Producto(3, "Taza Paws Coffee", 5.00));
 
     // Recuperar carrito desde sesión
+    @SuppressWarnings("unchecked")
     List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
     if (carrito == null) {
         carrito = new ArrayList<>();
