@@ -1,5 +1,5 @@
 <%@ page import="java.sql.*" %>
-<%@ page session="true" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,90 +8,100 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Navegación -->
-    <header>
-        <nav class="container">
-            <div class="logo">🐾 PAWS COFFEE</div>
-            <ul class="nav-links">
-                <li><a href="home.html">Inicio</a></li>
-                <li><a href="servicios.html">Servicios</a></li>
-                <li><a href="menu.html">Menú</a></li>
-                <li><a href="reservas.html">Reservas</a></li>
-                <li><a href="nosotros.html">Nosotros</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <!-- Formulario -->
-    <main style="margin-top: 100px;">
-        <section class="container">
-            <div class="modal-content">
-                <h2 style="margin-bottom: 2rem; color: #8B4513; text-align: center;">Acceso al Sistema</h2>
-                <form method="post" action="login.jsp">
-                    <div class="form-group">
-                        <label for="correo">Correo:</label>
-                        <input type="email" id="correo" name="correo" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contrasena">Contraseña:</label>
-                        <input type="password" id="contrasena" name="contrasena" required>
-                    </div>
-                    <button type="submit" class="cta-button">Iniciar Sesión</button>
-                </form>
+<header>
+    <nav class="container">
+        <div class="logo">🐾 PAWS COFFEE</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="servicios.html">Servicios</a></li>
+            <li><a href="menu.html">Menú</a></li>
+            <li><a href="reservas.html">Reservas</a></li>
+            <li><a href="nosotros.html">Nosotros</a></li>
+        </ul>
+    </nav>
+</header>
 
-                <%-- Lógica de validación --%>
-                <%
-                    String correo = request.getParameter("correo");
-                    String contrasena = request.getParameter("contrasena");
+<main style="margin-top: 100px;">
+    <section class="container">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 2rem; color: #8B4513; text-align: center;">Acceso al Sistema</h2>
+            <form method="post" action="login.jsp">
+                <div class="form-group">
+                    <label for="correo">Correo:</label>
+                    <input type="email" id="correo" name="correo" required>
+                </div>
+                <div class="form-group">
+                    <label for="contrasena">Contraseña:</label>
+                    <input type="password" id="contrasena" name="contrasena" required>
+                </div>
+                <button type="submit" class="cta-button">Iniciar Sesión</button>
+            </form>
 
-                    if (correo != null && contrasena != null) {
-                        try {
-                            Class.forName("oracle.jdbc.driver.OracleDriver");
-                            Connection conn = DriverManager.getConnection(
-                                "jdbc:oracle:thin:@localhost:1521:xe", "PAWS", "1234"
-                            );
+<%
+    String correo = request.getParameter("correo");
+    String contrasena = request.getParameter("contrasena");
 
-                            PreparedStatement ps = conn.prepareStatement(
-                                "SELECT Rol FROM Usuario WHERE Correo = ? AND Contrasena = ?"
-                            );
-                            ps.setString(1, correo);
-                            ps.setString(2, contrasena);
+    if (correo != null && contrasena != null) {
+        try {
+            // Cargar el driver de MySQL
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
-                            ResultSet rs = ps.executeQuery();
+            // Conexión a MySQL (ajusta usuario y contraseña según tu configuración)
+            Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/pawscoffee?useSSL=false&serverTimezone=UTC", 
+                "root", 
+                ""  // ← Pon tu contraseña si tiene
+            );
 
-                            if (rs.next()) {
-                                String rol = rs.getString("Rol");
-                                session.setAttribute("correo", correo);
-                                session.setAttribute("rol", rol);
+            String sql = "SELECT Rol FROM Usuario WHERE Correo = ? AND Contrasena_hash = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, correo);
+            stmt.setString(2, contrasena);
+            ResultSet rs = stmt.executeQuery();
 
-                                switch (rol.toLowerCase()) {
-                                    case "cliente":
-                                        response.sendRedirect("cliente.html");
-                                        break;
-                                    case "empleado":
-                                        response.sendRedirect("empleado.html");
-                                        break;
-                                    case "supervisor":
-                                        response.sendRedirect("supervisor.html");
-                                        break;
-                                    case "gerente":
-                                        response.sendRedirect("gerente.html");
-                                        break;
-                                    default:
-                                        out.println("<p style='color:red;'>Rol no reconocido.</p>");
-                                }
-                            } else {
-                                out.println("<p style='color:red;'>Correo o contraseña incorrectos.</p>");
-                            }
+            if (rs.next()) {
+                String rol = rs.getString("Rol");
+                session.setAttribute("correo", correo);
+                session.setAttribute("rol", rol);
 
-                            conn.close();
-                        } catch (Exception e) {
-                            out.println("<p style='color:red;'>Error: " + e.getMessage() + "</p>");
-                        }
-                    }
-                %>
-            </div>
-        </section>
-    </main>
+                if ("Cliente".equalsIgnoreCase(rol)) {
+                    response.sendRedirect("cliente.html");
+                } else if ("Empleado".equalsIgnoreCase(rol)) {
+                    response.sendRedirect("empleado.html");
+                } else if ("Supervisor".equalsIgnoreCase(rol)) {
+                    response.sendRedirect("supervisor.html");
+                } else if ("Gerente".equalsIgnoreCase(rol)) {
+                    response.sendRedirect("gerente.html");
+                }
+            } else {
+                out.println("<p style='color:red;'>Credenciales inválidas</p>");
+            }
+
+            conn.close();
+        } catch (Exception e) {
+            out.println("<p style='color:red;'>Error: " + e.getMessage() + "</p>");
+        }
+    }
+%>
+
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <ul class="footer-nav">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="servicios.html">Servicios</a></li>
+            <li><a href="menu.html">Menú</a></li>
+            <li><a href="reservas.html">Reservas</a></li>
+            <li><a href="nosotros.html">Nosotros</a></li>
+        </ul>
+        <p>&copy; 2025 Paws Coffee. Todos los derechos reservados.</p>
+        <a href="logout.jsp">Cerrar Sesión</a>
+    </div>
+</footer>
+
 </body>
 </html>
