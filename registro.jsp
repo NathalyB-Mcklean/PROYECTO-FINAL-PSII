@@ -124,14 +124,15 @@
 </main>
 
 <footer>
-    <div class="footer-content">
-        <ul class="footer-nav">
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="servicios.html">Servicios</a></li>
-            <li><a href="menu.html">Menú</a></li>
-            <li><a href="reservas.html">Reservas</a></li>
-            <li><a href="nosotros.html">Nosotros</a></li>
-        </ul>
+    <div class="container">
+        <nav>
+            <a href="index.html">Inicio</a> |
+            <a href="servicios.html">Servicios</a> |
+            <a href="menu.html">Menú</a> |
+            <a href="reservas.html">Reservas</a> |
+            <a href="nosotros.html">Nosotros</a> |
+            <a href="logout.jsp">Cerrar Sesión</a>
+        </nav>
         <p>&copy; 2025 Paws Coffee. Todos los derechos reservados.</p>
         <a href="logout.jsp">Cerrar Sesión</a>
     </div>
