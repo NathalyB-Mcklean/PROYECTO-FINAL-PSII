@@ -1,4 +1,5 @@
 <%@ page import="java.sql.*" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <header>
     <nav class="container">
         <div class="logo">🐾 PAWS COFFEE</div>
@@ -16,43 +18,72 @@
             <li><a href="menu.html">Menú</a></li>
             <li><a href="reservas.html">Reservas</a></li>
             <li><a href="nosotros.html">Nosotros</a></li>
+            <li><a href="gerente.html">Volver al Panel</a></li>
         </ul>
     </nav>
 </header>
 
-<main class="container" style="margin-top:100px;">
-    <h1>Reporte Financiero</h1>
+<main style="margin-top: 100px;">
+    <section class="container">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 2rem; color: #8B4513; text-align: center;">Reporte Financiero</h2>
 
-    <%
-        String url = "jdbc:mysql://localhost:3306/tu_basedatos";
-        String user = "root";
-        String password = "tu_contraseña";
+<%
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        Connection conn = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/pawscoffee?useSSL=false&serverTimezone=UTC",
+            "root",
+            "" // Coloca tu contraseña si tienes
+        );
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(url, user, password);
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Vista_Resumen_Financiero");
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Vista_Resumen_Financiero");
 
-            if (rs.next()) {
-    %>
-    <section>
-        <h2>Resumen General</h2>
-        <ul>
-            <li><strong>Total Ventas:</strong> <%= rs.getInt("Total_Ventas") %></li>
-            <li><strong>Ingresos Totales:</strong> $<%= rs.getDouble("Ingresos_Totales") %></li>
-            <li><strong>Total Reservas:</strong> <%= rs.getInt("Total_Reservas") %></li>
-            <li><strong>Clientes Activos:</strong> <%= rs.getInt("Clientes_Activos") %></li>
-            <li><strong>Empleados Activos:</strong> <%= rs.getInt("Empleados_Activos") %></li>
-        </ul>
-    </section>
-    <%
-            }
-            con.close();
-        } catch(Exception e) {
-            out.println("<p style='color:red;'>Error al cargar datos financieros: " + e.getMessage() + "</p>");
+        if (rs.next()) {
+%>
+            <ul style="list-style: none; padding: 0; font-size: 1.2rem;">
+                <li><b>Total Ventas:</b> <%= rs.getInt("Total_Ventas") %></li>
+                <li><b>Ingresos Totales:</b> $<%= rs.getDouble("Ingresos_Totales") %></li>
+                <li><b>Total Reservas:</b> <%= rs.getInt("Total_Reservas") %></li>
+                <li><b>Clientes Activos:</b> <%= rs.getInt("Clientes_Activos") %></li>
+                <li><b>Empleados Activos:</b> <%= rs.getInt("Empleados_Activos") %></li>
+            </ul>
+<%
+        } else {
+%>
+            <p style="color:red;">No se encontraron datos financieros.</p>
+<%
         }
-    %>
+
+        conn.close();
+    } catch(Exception e) {
+%>
+        <p style="color:red;">Error al conectar a la base de datos: <%= e.getMessage() %></p>
+<%
+    }
+%>
+
+            <div style="margin-top: 2rem; text-align: center;">
+                <a href="gerente.html" class="cta-button">Volver al Panel del Gerente</a>
+            </div>
+        </div>
+    </section>
 </main>
+
+<footer>
+    <div class="container">
+        <nav>
+            <a href="home.html">Inicio</a> |
+            <a href="servicios.html">Servicios</a> |
+            <a href="menu.html">Menú</a> |
+            <a href="reservas.html">Reservas</a> |
+            <a href="nosotros.html">Nosotros</a> |
+            <a href="logout.jsp">Cerrar Sesión</a>
+        </nav>
+        <p>&copy; 2025 Paws Coffee. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
 </body>
 </html>
